@@ -1,0 +1,32 @@
+{% extends "users/base_Admin.html" %}
+{% load static %}
+
+{% block content %}
+
+    <header class="bg-dark text-white text-center py-5">
+        <div class="container">
+            <h1 class="text-uppercase">Mi Perfil</h1>
+            <p class="lead">Bienvenido a tu perfil, {{ request.user.username }}.</p>
+        </div>
+    </header>
+
+    <section class="py-5">
+        <div class="container text-center">
+            <div class="mb-4">
+                {% if request.user.userprofile.profile_picture %}
+                    <img src="{{ request.user.userprofile.profile_picture.url }}" alt="Profile Picture" class="rounded-circle" style="width: 150px; height: 150px;">
+                {% else %}
+                    <img src="{% static 'default-profile.png' %}" alt="Foto de Perfil" class="rounded-circle" style="width: 150px; height: 150px;">
+                {% endif %}
+            </div>
+
+            <h3>Información Personal</h3>
+            <ul class="list-unstyled">
+                <li>Nombre de usuario: {{ request.user.username }}</li>
+                <li>Email: {{ request.user.email }}</li>
+            </ul>
+            <a class="btn btn-primary" href="/settings">Modificar Configuración</a>
+        </div>
+    </section>
+
+{% endblock %}

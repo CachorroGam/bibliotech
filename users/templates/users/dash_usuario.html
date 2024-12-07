@@ -1,0 +1,180 @@
+{% extends "users/base_usuario.html" %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+
+  <section id="carrusel" class="py-5 bg-light">
+      <div class="container">
+          <h2 class="text-center mb-4">Galería de Imágenes</h2>
+          
+          <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+              <div class="carousel-inner">
+                  <div class="carousel-item active">
+                      <img src="{% static 'images/imagen.jpeg' %}" class="d-block w-100 carrusel-img" alt="Imagen 1">
+                  </div>
+                  <div class="carousel-item">
+                      <img src="{% static 'images/imagen1.jpeg' %}" class="d-block w-100 carrusel-img" alt="Imagen 2">
+                  </div>
+                  <div class="carousel-item">
+                      <img src="{% static 'images/imagen2.jpeg' %}" class="d-block w-100 carrusel-img" alt="Imagen 3">
+                  </div>
+              </div>
+
+              <button class="carousel-control-prev custom-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next custom-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+              </button>
+          </div>
+      </div>
+  </section>
+
+
+
+  <section style="background-color: white;">
+      <div class="container px-4 px-lg-5 mt-5">
+          <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+              {% if libros %}
+                  {% for libro in libros %}
+                      <div class="col mb-5">
+                          <div class="card h-100">
+                              <div class="image-container" style="height: 250px; display: flex; justify-content: center; align-items: center;">
+                                  {% if libro.portada %}
+                                      <img class="card-img-top" src="{{ libro.portada.url }}" alt="Portada de {{ libro.titulo }}" style="object-fit: contain; max-height: 100%; max-width: 100%;" />
+                                  {% else %}
+                                      <img class="card-img-top" src="https://via.placeholder.com/150" alt="Portada de {{ libro.titulo }}" style="object-fit: contain; max-height: 100%; max-width: 100%;" />
+                                  {% endif %}
+                              </div>
+                              
+                              <div class="card-body p-4">
+                                  <div class="text-center">
+                                      <h5 class="fw-bolder">{{ libro.titulo }}</h5>
+                                      <p class="text-muted">Autor: {{ libro.autor }}</p>
+                                      <p class="text-muted">Género: {{ libro.genero }}</p>
+                                      <p class="text-muted">Fecha de Publicación: {{ libro.fecha_publicacion|date:"d/m/Y" }}</p>
+                                      <p class="text-muted">ISBN: {{ libro.isbn }}</p>
+                                      <p class="text-muted">
+                                          Estado: 
+                                          {% if libro.disponible %}
+                                              <span class="text-success">Disponible</span>
+                                          {% else %}
+                                              <span class="text-danger">No disponible</span>
+                                          {% endif %}
+                                      </p>
+                                  </div>
+                              </div>
+
+                              <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                  <div class="text-center mb-2">
+                                      <a class="btn btn-outline-dark" href="{% url 'detalles_libro' libro.id %}">Detalles</a>
+
+                                  </div>
+                                  
+                              </div>
+                          </div>
+                      </div>
+                  {% empty %}
+                      <p>No se encontraron libros con ese criterio de búsqueda.</p>  
+                  {% endfor %}
+              {% else %}
+                  <p>No hay libros disponibles.</p>  
+          </div>
+      </div>
+
+  </section>
+
+  <section id="historia_users" class="py-5 bg-light">
+      <div class="container">
+        <h2 class="text-center mb-4">Nuestra Historia</h2>
+        <p class="lead text-center">En el año 2007, un grupo de amantes de la lectura y la educación fundó esta biblioteca con el objetivo de proporcionar acceso a la cultura y el conocimiento. Desde sus inicios, nos hemos dedicado a ofrecer un espacio para el aprendizaje y el disfrute de la lectura. A lo largo de los años, hemos crecido y evolucionado, adaptándonos a las nuevas tecnologías y necesidades de la comunidad.</p>
+      </div>
+    </section>
+    
+
+    <section id="mision_users" class="py-5">
+      <div class="container">
+        <h2 class="text-center mb-4">Misión</h2>
+        <p class="lead text-center">Nuestra misión es fomentar el amor por la lectura y el aprendizaje, proporcionando acceso gratuito a una amplia variedad de libros y recursos educativos. A través de actividades culturales y programas comunitarios, buscamos incentivar el desarrollo intelectual y personal de nuestros visitantes, contribuyendo al crecimiento de una sociedad más informada y crítica.</p>
+      </div>
+    </section>
+    
+
+    <section id="vision_users" class="py-5 bg-light">
+      <div class="container">
+        <h2 class="text-center mb-4">Visión</h2>
+        <p class="lead text-center">Aspiramos a ser una biblioteca líder en el fomento de la cultura y el conocimiento, ofreciendo un espacio inclusivo y accesible para todos. Nos visualizamos como un centro cultural clave en la comunidad, donde la educación y la lectura sean motores de cambio social. En el futuro, soñamos con ampliar nuestras instalaciones y programas, convirtiéndonos en un referente para futuras generaciones de lectores y estudiantes.</p>
+      </div>
+    </section>
+    
+
+    <section id="valores_users" class="py-5">
+      <div class="container">
+        <h2 class="text-center mb-4">Nuestros Valores</h2>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="value-card text-center p-4 bg-white shadow-sm rounded">
+              <i class="fas fa-book-open fa-3x mb-3 text-primary"></i>
+              <h4 class="h5">Accesibilidad</h4>
+              <p>Nos aseguramos de que todos, independientemente de su contexto, tengan acceso a la educación y el conocimiento.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="value-card text-center p-4 bg-white shadow-sm rounded">
+              <i class="fas fa-users fa-3x mb-3 text-primary"></i>
+              <h4 class="h5">Comunidad</h4>
+              <p>Trabajamos para ser un punto de encuentro para todos los miembros de la comunidad, promoviendo la colaboración y el intercambio de ideas.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="value-card text-center p-4 bg-white shadow-sm rounded">
+              <i class="fas fa-lightbulb fa-3x mb-3 text-primary"></i>
+              <h4 class="h5">Innovación</h4>
+              <p>Implementamos nuevas tecnologías y métodos para mejorar la experiencia educativa y el acceso a la información.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+
+    <section id="objetivos_users" class="py-5 bg-light">
+      <div class="container">
+        <h2 class="text-center mb-4">Nuestros Objetivos</h2>
+        <ul class="list-unstyled">
+          <li class="d-flex align-items-center mb-3">
+            <i class="fas fa-check-circle text-primary me-3"></i>
+            <span>Fomentar la lectura y el acceso al conocimiento a través de un amplio catálogo de libros y recursos.</span>
+          </li>
+          <li class="d-flex align-items-center mb-3">
+            <i class="fas fa-check-circle text-primary me-3"></i>
+            <span>Desarrollar programas educativos y culturales que contribuyan al crecimiento personal de la comunidad.</span>
+          </li>
+          <li class="d-flex align-items-center mb-3">
+            <i class="fas fa-check-circle text-primary me-3"></i>
+            <span>Crear un espacio inclusivo y accesible para todas las personas, sin distinción de edad, género o condición social.</span>
+          </li>
+          <li class="d-flex align-items-center mb-3">
+            <i class="fas fa-check-circle text-primary me-3"></i>
+            <span>Establecer alianzas con instituciones educativas y culturales para enriquecer nuestra oferta de servicios.</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+    
+
+    <section id="gracias_users" class="py-5">
+      <div class="container">
+        <h2 class="text-center mb-4">Gracias</h2>
+        <p class="lead text-center">Agradecemos profundamente a nuestros miembros, voluntarios, colaboradores y donantes que han sido parte fundamental de nuestra biblioteca. Sin su apoyo, no habríamos logrado ofrecer tantos recursos y actividades. Su confianza en nuestra misión nos impulsa a seguir adelante, siempre buscando nuevas formas de contribuir al desarrollo de nuestra comunidad. ¡Gracias por ser parte de este proyecto cultural!</p>
+      </div>
+    </section>
+
+    {% endif %}
+{% endblock %}
