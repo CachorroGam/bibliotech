@@ -9,16 +9,7 @@ from django.utils import timezone
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     
-    role = models.CharField(
-        max_length=50, 
-        choices=[
-            ('Administrador', 'Administrador'), 
-            ('Usuario', 'Usuario'),
-            ('Empleado', 'Empleado'),
-        ], 
-        default='Usuario' 
-    )
-
+    role = models.CharField
     avatar = models.ImageField(default='default.jpg', upload_to='profile_images')
     bio = models.TextField()
     numero_membresia = models.BigIntegerField(unique=True, null=True, blank=True)  
