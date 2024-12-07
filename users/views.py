@@ -32,10 +32,15 @@ from django.contrib.auth import logout
 from django.utils.decorators import decorator_from_middleware
 from django.middleware.cache import CacheMiddleware
 
+from django.contrib.auth.models import Group
 
-admin_group, created = Group.objects.get_or_create(name='Administrador')
-empleado_group, created = Group.objects.get_or_create(name='Empleado')  
-usuario_group, created = Group.objects.get_or_create(name='Usuario')
+# Crear grupos si no existen
+admin_group, _ = Group.objects.get_or_create(name='Administrador')
+empleado_group, _ = Group.objects.get_or_create(name='Empleado')
+usuario_group, _ = Group.objects.get_or_create(name='Usuario')
+
+# Asignar usuario a un grupo
+
 
 
 def index(request):

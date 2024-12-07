@@ -6,41 +6,45 @@ from django.utils import timezone
 
 
 
+from django.contrib.auth.models import User
+from django.db import models
+from django.utils import timezone
+from PIL import Image
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    
-    role = models.CharField
+
+    # Campo para el rol del usuario (opcional si usas grupos)
+    role = models.CharField(max_length=50, null=True, blank=True)
+
     avatar = models.ImageField(default='default.jpg', upload_to='profile_images')
-    bio = models.TextField()
-    numero_membresia = models.BigIntegerField(unique=True, null=True, blank=True)  
+    bio = models.TextField(blank=True, null=True)
+    numero_membresia = models.BigIntegerField(unique=True, null=True, blank=True)
     fecha_registro = models.DateTimeField(default=timezone.now)
 
     ESTADO_MEMBRESIA_CHOICES = [
         ('activo', 'Activo'),
         ('inactivo', 'Inactivo'),
     ]
-    
     estado_membresia = models.CharField(
-        max_length=8, 
-        choices=ESTADO_MEMBRESIA_CHOICES, 
+        max_length=8,
+        choices=ESTADO_MEMBRESIA_CHOICES,
         default='activo'
-    )  
-    
+    )
+
     def __str__(self):
-        return f"{self.user.username} - {self.role}"
-    
-    
-    def __str__(self):
-        return self.user.username
+        return f"{self.user.username} - {self.role or 'Sin rol'}"
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        img = Image.open(self.avatar.path)
-        if img.height > 100 or img.width > 100:
-            new_img = (100, 100)
-            img.thumbnail(new_img)
-            img.save(self.avatar.path)
+        # Ajustar tamaño del avatar si es necesario
+        if self.avatar:
+            img = Image.open(self.avatar.path)
+            if img.height > 100 or img.width > 100:
+                new_img = (100, 100)
+                img.thumbnail(new_img)
+                img.save(self.avatar.path)
 
 
 
@@ -143,3 +147,18 @@ class Genero(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+
+
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.contrib.auth.models import Group
+from .models import Profile
+
+@receiver(post_save, sender=Profile)
+def asignar_grupo(sender, instance, **kwargs):
+    if instance.role:
+        group, _ = Group.objects.get_or_create(name=instance.role)
+        instance.user.groups.clear()  # Limpia grupos previos
+        instance.user.groups.add(group)
